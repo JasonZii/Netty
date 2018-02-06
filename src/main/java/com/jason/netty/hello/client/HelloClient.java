@@ -14,32 +14,32 @@ import io.netty.handler.codec.string.StringEncoder;
  */
 public class HelloClient {
 
-    static final String HOST = System.getProperty("host","127.0.0.1");
-    static final int PORT = Integer.parseInt(System.getProperty("port","8080"));
-    static final int SIZE = Integer.parseInt(System.getProperty("size","256"));
+    static final String HOST = System.getProperty("host", "127.0.0.1");
+    static final int PORT = Integer.parseInt(System.getProperty("port", "8080"));
+    static final int SIZE = Integer.parseInt(System.getProperty("size", "256"));
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 
         EventLoopGroup group = new NioEventLoopGroup();
         try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-             .channel(NioSocketChannel.class)
-             .option(ChannelOption.TCP_NODELAY,true)
-             .handler(new ChannelInitializer<SocketChannel>() {
-                 protected void initChannel(SocketChannel ch) throws Exception {
-                     ChannelPipeline p = ch.pipeline();
-                     p.addLast("decoder",new StringDecoder());
-                     p.addLast("encoder",new StringEncoder());
-                     p.addLast(new HelloClientHandler());
-                 }
-             });
+            Bootstrap bs = new Bootstrap();
+            bs.group(group);
+            bs.channel(NioSocketChannel.class);
+            bs.option(ChannelOption.TCP_NODELAY, true);
+            bs.handler(new ChannelInitializer<SocketChannel>() {
+                protected void initChannel(SocketChannel ch) throws Exception {
+                    ChannelPipeline p = ch.pipeline();
+                    p.addLast("decoder", new StringDecoder());
+                    p.addLast("encoder", new StringEncoder());
+                    p.addLast(new HelloClientHandler());
+                }
+            });
 
-            ChannelFuture futrue = b.connect(HOST, PORT).sync();
+            ChannelFuture futrue = bs.connect(HOST, PORT).sync();
             futrue.channel().writeAndFlush("Hello Netty Server,I am a common client");
             futrue.channel().closeFuture().sync();
-        }finally {
+        } finally {
             group.shutdownGracefully();
         }
     }
- }
+}
