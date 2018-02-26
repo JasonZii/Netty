@@ -28,13 +28,13 @@ public class HelloServer {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
-            ServerBootstrap sbs = new ServerBootstrap();
-            sbs.group(bossGroup, workerGroup);
-            sbs.channel(NioServerSocketChannel.class);
-            sbs.localAddress(new InetSocketAddress(port));
-            sbs.option(ChannelOption.SO_BACKLOG, 128);
-            sbs.childOption(ChannelOption.SO_KEEPALIVE, true);
-            sbs.childHandler(new ChannelInitializer<SocketChannel>() {
+            ServerBootstrap sbs = new ServerBootstrap()
+                    .group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .localAddress(new InetSocketAddress(port))
+                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
 
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast("decoder", new StringDecoder());

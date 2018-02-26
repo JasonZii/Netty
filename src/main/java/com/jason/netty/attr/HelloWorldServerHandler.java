@@ -1,18 +1,18 @@
-package com.jason.netty.hello.server;
+package com.jason.netty.attr;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
- * 服务器端处理类
+ * @Author : jasonzii @Author
+ * @Description :
+ * @CreateDate : 18.2.26  11:20
  */
-public class HelloServerHandler extends ChannelInboundHandlerAdapter{
-
+public class HelloWorldServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("server channelRead..");
-        //remoteAddress()  方法获得客户端的ip地址
-        System.out.print(ctx.channel().remoteAddress()+"->Server:"+ msg.toString());
+        System.out.println("server channelRead...");
+        System.out.println(ctx.channel().remoteAddress()+"->server:" + msg.toString());
         ctx.write("server write"+msg);
         ctx.flush();
     }
